@@ -1,9 +1,9 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
-import { UserModel } from '../models/user.model';
-import { AuthModel } from '../models/auth.model';
-import { AuthHTTPService } from './auth-http';
+import { UserModel } from '../../../modules/auth/models/user.model';
+import { AuthModel } from '../../../modules/auth/models/auth.model';
+import { AuthHTTPService } from '../../../modules/auth/services/auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 
