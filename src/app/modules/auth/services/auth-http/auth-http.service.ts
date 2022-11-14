@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { UserModel } from '../../models/user.model';
 import { environment } from '../../../../../environments/environment';
 import { AuthModel } from '../../models/auth.model';
 
-const API_USERS_URL = `${environment.apiUrl}/auth`;
+const API_USERS_URL = `${environment.apiUrl}`;
 
 @Injectable({
   providedIn: 'root',
@@ -15,10 +15,17 @@ export class AuthHTTPService {
 
   // public methods
   login(email: string, password: string): Observable<any> {
-    return this.http.post<AuthModel>(`${API_USERS_URL}/login`, {
-      email,
-      password,
-    });
+    debugger;
+    const body = new HttpParams()
+    .set('grant_type', 'password')
+    .set('username', email)
+    .set('password', password)
+    .set('client_id', 'adminclient')
+    .set('client_secret', 'secret');
+
+    return this.http.post<any>(`${API_USERS_URL}identity/connect/token`, 
+    body ,
+      { headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded') });
   }
 
   // CREATE =>  POST: add a new user to the server

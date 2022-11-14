@@ -3,9 +3,10 @@ import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { UserModel } from '../../../modules/auth/models/user.model';
 import { AuthModel } from '../../../modules/auth/models/auth.model';
-import { AuthHTTPService } from '../../../modules/auth/services/auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { AuthHTTPService } from 'src/app/modules/auth/services/auth-http/auth-http.service';
+
 
 export type UserType = UserModel | undefined;
 
@@ -14,7 +15,7 @@ export type UserType = UserModel | undefined;
 })
 export class AuthService implements OnDestroy {
   // private fields
-  private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
+  private unsubscribe: Subscription[] = [];
   private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
 
   // public fields
@@ -44,14 +45,20 @@ export class AuthService implements OnDestroy {
   }
 
   // public methods
-  login(email: string, password: string): Observable<UserType> {
+  login(email: string, password: string): Observable<any> {
     this.isLoadingSubject.next(true);
+
     return this.authHttpService.login(email, password).pipe(
-      map((auth: AuthModel) => {
-        const result = this.setAuthFromLocalStorage(auth);
-        return result;
+      // map((auth: AuthModel) => {
+      //   const result = this.setAuthFromLocalStorage(auth);
+      //   return result;
+      // }),
+      
+      switchMap(async (response: any) => {
+        
+        //this.getUserByToken()
+        console.log(response);
       }),
-      switchMap(() => this.getUserByToken()),
       catchError((err) => {
         console.error('err', err);
         return of(undefined);
