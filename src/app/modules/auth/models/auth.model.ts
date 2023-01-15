@@ -8,6 +8,7 @@ export class AuthModel {
     this.refreshToken = auth.refreshToken;
     this.expiresIn = auth.expiresIn;
     
-
+ 
+    
   }
 }
