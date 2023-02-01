@@ -6,7 +6,6 @@ import { AuthModel } from '../../../modules/auth/models/auth.model';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { AuthHTTPService } from 'src/app/modules/auth/services/auth-http/auth-http.service';
-import { UsersTable } from 'src/app/_fake/users.table';
 
 export type UserType = UserModel | undefined;
 
@@ -14,11 +13,9 @@ export type UserType = UserModel | undefined;
   providedIn: 'root',
 })
 export class AuthService implements OnDestroy {
-  // private fields
+  
   private unsubscribe: Subscription[] = [];
   private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
-
-  // public fields
   currentUser$: Observable<UserType>;
   isLoading$: Observable<boolean>;
   currentUserSubject: BehaviorSubject<UserType>;
@@ -44,19 +41,33 @@ export class AuthService implements OnDestroy {
     this.unsubscribe.push(subscr);
   }
 
-  // public methods
-  login(email: string, password: string): Observable<any> {
-    this.isLoadingSubject.next(true);
+  // login(email: string, password: string): Observable<any> {
+  //   this.isLoadingSubject.next(true);
 
+  //   return this.authHttpService.login(email, password).pipe(
+  //     // map((auth: AuthModel) => {
+  //     //   const result = this.setAuthFromLocalStorage(auth);
+  //     //   return result;
+  //     // }),
+  //     switchMap(async (response: any) => {
+  //       //this.getUserByToken()
+  //       console.log(response);
+  //     }),
+  //     catchError((err) => {
+  //       console.error('err', err);
+  //       return of(undefined);
+  //     }),
+  //     finalize(() => this.isLoadingSubject.next(false))
+  //   );
+  // }
+  login(email: string, password: string): Observable<UserType> {
+    this.isLoadingSubject.next(true);
     return this.authHttpService.login(email, password).pipe(
-      // map((auth: AuthModel) => {
-      //   const result = this.setAuthFromLocalStorage(auth);
-      //   return result;
-      // }),
-      switchMap(async (response: any) => {
-        //this.getUserByToken()
-        console.log(response);
+      map((auth: AuthModel) => {
+        const result = this.setAuthFromLocalStorage(auth);
+        return result;
       }),
+      switchMap(() => this.getUserByToken()),
       catchError((err) => {
         console.error('err', err);
         return of(undefined);
@@ -65,6 +76,8 @@ export class AuthService implements OnDestroy {
     );
   }
 
+
+
   logout() {
     localStorage.removeItem(this.authLocalStorageToken);
     this.router.navigate(['/auth/login'], {
@@ -72,38 +85,57 @@ export class AuthService implements OnDestroy {
     });
   }
 
+  // getUserByToken(): Observable<UserType> {
+
+  //   debugger;
+  //   const auth = this.getAuthFromLocalStorage();
+  //   if (!auth) {
+  //     return of(undefined);
+  //   }
+  //   const user = UsersTable.users[0];
+  //   user.authToken = auth.access_token;
+  //   if (user) {
+  //     this.currentUserSubject.next(user);
+  //   } else {
+  //     this.logout();
+  //   }
+  //   return user;
+
+  //   // this.isLoadingSubject.next(true);
+  //   // return this.authHttpService.getUserByToken(auth.access_token).pipe(
+  //   //   map((user: UserType) => {
+  //   //     if (user) {
+  //   //       this.currentUserSubject.next(user);
+  //   //     } else {
+  //   //       this.logout();
+  //   //     }
+  //   //     return user;
+  //   //   }),
+  //   //   finalize(() => this.isLoadingSubject.next(false))
+  //   // );
+  // }
+
   getUserByToken(): Observable<UserType> {
     const auth = this.getAuthFromLocalStorage();
-    if (!auth) {
+    if (!auth || !auth.access_token) {
       return of(undefined);
     }
 
-    const user = UsersTable.users[0];
-    user.authToken = auth.access_token;
-
-    if (user) {
-      this.currentUserSubject.next(user);
-    } else {
-      this.logout();
-    }
-
-    return user;
-
-    // this.isLoadingSubject.next(true);
-    // return this.authHttpService.getUserByToken(auth.access_token).pipe(
-    //   map((user: UserType) => {
-    //     if (user) {
-    //       this.currentUserSubject.next(user);
-    //     } else {
-    //       this.logout();
-    //     }
-    //     return user;
-    //   }),
-    //   finalize(() => this.isLoadingSubject.next(false))
-    // );
+    this.isLoadingSubject.next(true);
+    return this.authHttpService.getUserByToken(auth.access_token).pipe(
+      map((user: UserType) => {
+        if (user) {
+          this.currentUserSubject.next(user);
+        } else {
+          this.logout();
+        }
+        return user;
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    );
   }
 
-  // need create new user then login
+
   registration(user: UserModel): Observable<any> {
     this.isLoadingSubject.next(true);
     return this.authHttpService.createUser(user).pipe(

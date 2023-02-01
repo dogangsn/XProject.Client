@@ -3,7 +3,7 @@ import { map, observable, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { UserModel } from '../../models/user.model';
 import { environment } from '../../../../../environments/environment';
-import { UsersTable } from 'src/app/_fake/users.table';
+import { UsersTable } from 'src/app/models/auth/Fake/users.table';
 
 const API_USERS_URL = `${environment.apiUrl}`;
 
