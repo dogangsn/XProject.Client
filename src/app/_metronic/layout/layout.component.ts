@@ -30,7 +30,6 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   footerCSSClasses: string;
   headerCSSClasses: string;
   headerHTMLAttributes: any = {};
-  // offcanvases
   extrasSearchOffcanvasDisplay = false;
   extrasNotificationsOffcanvasDisplay = false;
   extrasQuickActionsOffcanvasDisplay = false;

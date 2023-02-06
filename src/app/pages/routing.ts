@@ -26,18 +26,18 @@ const Routing: Routes = [
     loadChildren: () =>
       import('../modules/wizards/wizards.module').then((m) => m.WizardsModule),
   },
-  {
-    path: 'crafted/widgets',
-    loadChildren: () =>
-      import('../modules/widgets-examples/widgets-examples.module').then(
-        (m) => m.WidgetsExamplesModule
-      ),
-  },
-  {
-    path: 'apps/chat',
-    loadChildren: () =>
-      import('../modules/apps/chat/chat.module').then((m) => m.ChatModule),
-  },
+  // {
+  //   path: 'crafted/widgets',
+  //   loadChildren: () =>
+  //     import('../modules/widgets-examples/widgets-examples.module').then(
+  //       (m) => m.WidgetsExamplesModule
+  //     ),
+  // },
+  // {
+  //   path: 'apps/chat',
+  //   loadChildren: () =>
+  //     import('../modules/apps/chat/chat.module').then((m) => m.ChatModule),
+  // },
   {
     path: '',
     redirectTo: '/dashboard',

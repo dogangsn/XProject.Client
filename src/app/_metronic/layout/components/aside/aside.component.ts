@@ -23,7 +23,7 @@ import {
 })
 export class AsideComponent implements OnInit, OnDestroy {
   asideTheme: string = '';
-  asideMinimize: boolean = false;
+  asideMinimize: boolean = true;
   asideMenuCSSClasses: string = '';
   // appPreviewDocsUrl: string = environment.appPreviewDocsUrl;
   @ViewChild('ktAsideScroll', { static: true }) ktAsideScroll: ElementRef;
