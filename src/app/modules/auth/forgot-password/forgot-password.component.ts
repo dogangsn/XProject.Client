@@ -3,7 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angul
 import { finalize } from 'rxjs';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from 'app/core/auth/auth.service';
+import { AuthService } from 'app/core/services/auth/auth.service';
 
 @Component({
     selector     : 'auth-forgot-password',

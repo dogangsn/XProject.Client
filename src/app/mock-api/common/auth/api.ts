@@ -99,6 +99,7 @@ export class AuthMockApi
                 // Verify the token
                 if ( this._verifyJWTToken(accessToken) )
                 {
+                    debugger;
                     return [
                         200,
                         {
@@ -158,11 +159,43 @@ export class AuthMockApi
                     false
                 ];
             });
+
+            this._fuseMockApiService
+            .onPost('api/auth/refresh-access-token')
+            .reply(({request}) => {
+
+                // Get the access token
+                const accessToken = request.body.accessToken;
+
+                // Verify the token
+                if ( this._verifyJWTToken(accessToken) )
+                {
+                    return [
+                        200,
+                        {
+                            user       : cloneDeep(this._user),
+                            accessToken: this._generateJWTToken(),
+                            tokenType  : 'bearer'
+                        }
+                    ];
+                }
+
+                // Invalid token
+                return [
+                    401,
+                    {
+                        error: 'Invalid token'
+                    }
+                ];
+            });
+
     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Private methods
     // -----------------------------------------------------------------------------------------------------
+
+
 
     /**
      * Return base64 encoded version of the given string
@@ -239,6 +272,7 @@ export class AuthMockApi
      */
     private _verifyJWTToken(token: string): boolean
     {
+        debugger;
         // Split the token into parts
         const parts = token.split('.');
         const header = parts[0];

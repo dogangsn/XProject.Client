@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanMatch, Route, Router, UrlSegment, UrlTree } from '@angular/router';
+import { AuthService } from 'app/core/services/auth/auth.service';
 import { Observable, of, switchMap } from 'rxjs';
-import { AuthService } from 'app/core/auth/auth.service';
+
 
 @Injectable({
     providedIn: 'root'

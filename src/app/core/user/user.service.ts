@@ -34,6 +34,7 @@ export class UserService
 
     get user$(): Observable<User>
     {
+        debugger;
         return this._user.asObservable();
     }
 

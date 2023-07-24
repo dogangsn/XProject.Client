@@ -4,6 +4,9 @@ import { BooleanInput } from '@angular/cdk/coercion';
 import { Subject, takeUntil } from 'rxjs';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+import { StorageDto } from 'app/core/models/storage/StorageDto';
+import { GeneralService } from 'app/core/services/general/general.service';
+import { user as userData } from 'app/mock-api/common/user/data';
 
 @Component({
     selector       : 'user',
@@ -20,8 +23,11 @@ export class UserComponent implements OnInit, OnDestroy
 
     @Input() showAvatar: boolean = true;
     user: User;
-
+    tokenInfo: StorageDto;
+    
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+    private _user: any = userData;
 
     /**
      * Constructor
@@ -43,15 +49,16 @@ export class UserComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        // Subscribe to user changes
-        this._userService.user$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((user: User) => {
-                this.user = user;
+        this.tokenInfo = GeneralService.tokenInfo();
+        this.user = this._user;
 
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        // this._userService.user$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((user: User) => {
+        //         console.log(user)
+        //         this.user = user;
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     /**

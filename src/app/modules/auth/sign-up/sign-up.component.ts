@@ -3,7 +3,8 @@ import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angul
 import { Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from 'app/core/auth/auth.service';
+import { AuthService } from 'app/core/services/auth/auth.service';
+
 
 @Component({
     selector     : 'auth-sign-up',

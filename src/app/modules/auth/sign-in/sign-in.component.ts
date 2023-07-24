@@ -3,7 +3,8 @@ import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angul
 import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertType } from '@fuse/components/alert';
-import { AuthService } from 'app/core/auth/auth.service';
+import { AuthService } from 'app/core/services/auth/auth.service';
+
 
 @Component({
     selector     : 'auth-sign-in',
@@ -45,8 +46,8 @@ export class AuthSignInComponent implements OnInit
     {
         // Create the form
         this.signInForm = this._formBuilder.group({
-            email     : ['hughes.brian@company.com', [Validators.required, Validators.email]],
-            password  : ['admin', Validators.required],
+            email     : ['deneme@deneme.com', [Validators.required, Validators.email]],
+            password  : ['123D654Dg!', Validators.required],
             rememberMe: ['']
         });
     }

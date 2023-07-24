@@ -7,6 +7,8 @@ import { Navigation } from 'app/core/navigation/navigation.types';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+import { StorageDto } from 'app/core/models/storage/StorageDto';
+import { GeneralService } from 'app/core/services/general/general.service';
 
 @Component({
     selector     : 'classy-layout',
@@ -15,6 +17,9 @@ import { UserService } from 'app/core/user/user.service';
 })
 export class ClassyLayoutComponent implements OnInit, OnDestroy
 {
+
+    tokenInfo: StorageDto = new StorageDto();
+
     isScreenSmall: boolean;
     navigation: Navigation;
     user: User;
@@ -24,6 +29,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
      * Constructor
      */
     constructor(
+        
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
         private _navigationService: NavigationService,
@@ -55,6 +61,8 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        this.tokenInfo = GeneralService.tokenInfo();
+
         // Subscribe to navigation data
         this._navigationService.navigation$
             .pipe(takeUntil(this._unsubscribeAll))
